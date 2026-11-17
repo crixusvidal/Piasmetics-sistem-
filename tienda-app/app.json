@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "Mi Tienda",
+    "slug": "mi-tienda",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mitienda.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.mitienda.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "La app usa la cámara para escanear boletas y registrar tus compras y ventas.",
+          "photosPermission": "La app lee fotos de boletas que ya tienes guardadas para registrarlas."
+        }
+      ],
+      [
+        "react-native-document-scanner-plugin",
+        {
+          "cameraPermission": "La app usa la cámara para escanear boletas y registrar tus compras y ventas."
+        }
+      ],
+      "expo-font"
+    ],
+    "scheme": "mitienda"
+  }
+}
