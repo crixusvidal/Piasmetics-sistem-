@@ -29,6 +29,7 @@ export function datosDemo(ajustes: Ajustes = DATOS_VACIOS.ajustes): Datos {
   let d: Datos = {
     ...DATOS_VACIOS,
     ajustes,
+    gastos: [],
     productos: base.map((p) => ({ ...p, stock: 0 })),
     campanas: [
       { id: "c1", nombre: "Lanzamiento invierno", canal: "Instagram", inicio: sumarDias(fin, -55), fin: sumarDias(fin, -35), inversion: 60000, impresiones: 42000, clics: 1150 },

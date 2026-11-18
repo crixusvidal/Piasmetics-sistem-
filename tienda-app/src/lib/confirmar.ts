@@ -10,6 +10,8 @@ export interface Dialogo {
   mensaje: string;
   /** Si existe, el diálogo pide confirmación y ejecuta esto al aceptar. */
   onSi?: () => void;
+  /** Texto del botón que acepta (por defecto "Eliminar"). */
+  textoSi?: string;
 }
 
 let mostrar: ((d: Dialogo) => void) | null = null;
@@ -20,14 +22,14 @@ export function registrarDialogos(fn: ((d: Dialogo) => void) | null) {
 }
 
 /** Pide confirmación antes de una acción destructiva. */
-export function confirmar(titulo: string, mensaje: string, onSi: () => void) {
+export function confirmar(titulo: string, mensaje: string, onSi: () => void, textoSi = "Eliminar") {
   if (Platform.OS === "web" && mostrar) {
-    mostrar({ titulo, mensaje, onSi });
+    mostrar({ titulo, mensaje, onSi, textoSi });
     return;
   }
   Alert.alert(titulo, mensaje, [
     { text: "Cancelar", style: "cancel" },
-    { text: "Eliminar", style: "destructive", onPress: onSi },
+    { text: textoSi, style: textoSi === "Eliminar" ? "destructive" : "default", onPress: onSi },
   ]);
 }
 

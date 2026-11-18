@@ -1,6 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { guardarAlmacen, leerAlmacen } from "./almacen";
 import { DATOS_VACIOS } from "./operaciones";
+import { normalizarDatos } from "./respaldo";
 import type { Datos } from "./types";
 
 const CLAVE = "mi-tienda:datos:v1";
@@ -20,12 +21,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const listo = useRef(false);
 
   useEffect(() => {
-    AsyncStorage.getItem(CLAVE)
+    leerAlmacen(CLAVE)
       .then((raw) => {
-        if (raw) {
-          const d = JSON.parse(raw) as Datos;
-          setDatos({ ...DATOS_VACIOS, ...d, ajustes: { ...DATOS_VACIOS.ajustes, ...d.ajustes } });
-        }
+        if (raw) setDatos(normalizarDatos(JSON.parse(raw) as Datos));
       })
       .catch((e) => console.warn("No se pudieron cargar los datos", e))
       .finally(() => {
@@ -36,7 +34,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!listo.current) return;
-    AsyncStorage.setItem(CLAVE, JSON.stringify(datos)).catch((e) => console.warn("No se pudo guardar", e));
+    guardarAlmacen(CLAVE, JSON.stringify(datos)).catch((e) => console.warn("No se pudo guardar", e));
   }, [datos]);
 
   const actualizar = useCallback((fn: (d: Datos) => Datos) => setDatos((d) => fn(d)), []);

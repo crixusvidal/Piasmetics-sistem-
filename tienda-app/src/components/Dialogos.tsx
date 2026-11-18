@@ -38,8 +38,8 @@ export function Dialogos() {
             <>
               <Boton titulo="Cancelar" variante="secundario" onPress={() => setD(null)} style={{ flex: 1 }} />
               <Boton
-                titulo="Confirmar"
-                variante="peligro"
+                titulo={d.textoSi && d.textoSi !== "Eliminar" ? d.textoSi : "Confirmar"}
+                variante={d.textoSi && d.textoSi !== "Eliminar" ? "primario" : "peligro"}
                 onPress={() => {
                   const fn = d.onSi;
                   setD(null);

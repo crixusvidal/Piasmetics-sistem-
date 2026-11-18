@@ -1,0 +1,17 @@
+{
+  "name": "mi-tienda-escritorio",
+  "version": "1.0.0",
+  "description": "Mi Tienda: ventas, utilidad e inventario (app de escritorio para Windows)",
+  "main": "main.cjs",
+  "author": "Piasmetics",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "empaquetar": "node empaquetar.cjs"
+  },
+  "devDependencies": {
+    "@electron/packager": "^18.3.6",
+    "electron": "^33.2.1"
+  }
+}

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Text } from "react-native";
+import { Platform, Share, Text } from "react-native";
 import { Aviso, Boton, Campo, Chips, Pantalla, Seccion, Tarjeta } from "../components/ui";
-import { confirmar } from "../lib/confirmar";
+import { carpetaDeDatos, guardadoEnArchivo } from "../lib/almacen";
+import { avisar, confirmar } from "../lib/confirmar";
 import { datosDemo } from "../lib/demo";
 import { DATOS_VACIOS } from "../lib/operaciones";
+import { crearRespaldo, leerRespaldo, nombreArchivoRespaldo } from "../lib/respaldo";
 import { useStore } from "../lib/store";
 import { colores } from "../lib/tema";
 
@@ -31,6 +33,48 @@ export default function Ajustes() {
     }
   };
 
+  const [pegado, setPegado] = useState("");
+  const web = Platform.OS === "web";
+
+  const exportar = async () => {
+    const texto = crearRespaldo(datos);
+    if (web) {
+      const enlace = document.createElement("a");
+      enlace.href = URL.createObjectURL(new Blob([texto], { type: "application/json" }));
+      enlace.download = nombreArchivoRespaldo();
+      enlace.click();
+      URL.revokeObjectURL(enlace.href);
+    } else {
+      await Share.share({ title: nombreArchivoRespaldo(), message: texto });
+    }
+  };
+
+  const importarTexto = (texto: string) => {
+    const r = leerRespaldo(texto);
+    if (!r.ok) return avisar("No se pudo restaurar", r.error);
+    const n = r.datos;
+    confirmar(
+      "¿Restaurar este respaldo?",
+      `Contiene ${n.productos.length} productos, ${n.ventas.length} ventas, ${n.compras.length} compras, ${n.gastos.length} gastos y ${n.campanas.length} campañas. Reemplazará todos tus datos actuales.`,
+      () => {
+        actualizar(() => n);
+        setPegado("");
+      },
+      "Restaurar",
+    );
+  };
+
+  const elegirArchivo = () => {
+    const entrada = document.createElement("input");
+    entrada.type = "file";
+    entrada.accept = ".json,application/json";
+    entrada.onchange = async () => {
+      const archivo = entrada.files?.[0];
+      if (archivo) importarTexto(await archivo.text());
+    };
+    entrada.click();
+  };
+
   return (
     <Pantalla estrecha titulo="Ajustes">
       <Seccion titulo="Moneda">
@@ -51,6 +95,26 @@ export default function Ajustes() {
           <Campo etiqueta="Clave de la app (APP_TOKEN)" value={clave} onChangeText={setClave} secureTextEntry autoCapitalize="none" />
           <Boton titulo="Guardar y probar conexión" onPress={probar} deshabilitado={!url.trim()} />
           {prueba && <Aviso tono={prueba.ok ? "bueno" : "critico"}>{prueba.msg}</Aviso>}
+        </Tarjeta>
+      </Seccion>
+
+      <Seccion titulo="Respaldo">
+        <Tarjeta style={{ gap: 10 }}>
+          <Text style={{ color: colores.textoSec, lineHeight: 19 }}>
+            {guardadoEnArchivo()
+              ? `Tus datos se guardan en un archivo de este computador${carpetaDeDatos() ? ` (${carpetaDeDatos()})` : ""}. `
+              : "Tus datos se guardan solo en este dispositivo. "}
+            Descarga un respaldo cada cierto tiempo y guárdalo en un lugar seguro; con él puedes recuperar todo o pasar tus datos a otro equipo.
+          </Text>
+          <Boton titulo={web ? "Descargar respaldo" : "Compartir respaldo"} onPress={exportar} />
+          {web ? (
+            <Boton titulo="Restaurar desde un archivo" variante="secundario" onPress={elegirArchivo} />
+          ) : (
+            <>
+              <Campo etiqueta="Pega aquí el texto del respaldo" value={pegado} onChangeText={setPegado} multiline autoCapitalize="none" autoCorrect={false} />
+              <Boton titulo="Restaurar" variante="secundario" onPress={() => importarTexto(pegado)} deshabilitado={!pegado.trim()} />
+            </>
+          )}
         </Tarjeta>
       </Seccion>
 

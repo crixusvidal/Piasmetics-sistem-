@@ -5,6 +5,7 @@ App para llevar las ventas de una tienda: costos y utilidad, inventario con rota
 | Carpeta | Contenido |
 |---|---|
 | `tienda-app/` | La app (Expo y React Native). Su `README.md` explica todo; `GUIA-IPHONE.md` explica cómo instalarla en iPhone |
+| `tienda-escritorio/` | La app como programa de Windows (`MiTienda.exe`), con los datos guardados en un archivo del computador |
 | `tienda-server/` | Servidor opcional que ordena boletas difíciles con IA (Claude). La app funciona sin él |
 | `capturas/` | `mi-tienda-pc.zip` (la app lista para abrir en un PC con `iniciar.bat`), `mi-tienda-web.zip` y capturas de pantalla |
 
@@ -19,6 +20,21 @@ Expand-Archive codigo\capturas\mi-tienda-pc.zip -DestinationPath . -Force
 ```
 
 Para actualizar: `cd codigo`, `git pull` y volver a ejecutar `Expand-Archive`.
+
+## Crear MiTienda.exe (Windows)
+
+Con Git y Node.js instalados, en PowerShell:
+
+```powershell
+git clone https://github.com/crixusvidal/Piasmetics-sistem-.git codigo   # o git pull si ya lo tienes
+codigo\tienda-escritorio\crear-exe.bat
+```
+
+Tarda unos minutos la primera vez y abre la carpeta `salida\MiTienda-win32-x64`; ahí está `MiTienda.exe` (no necesita Node para usarse, puedes copiar la carpeta donde quieras). Los datos quedan en `%APPDATA%\MiTienda\datos\datos.json` y se conservan al actualizar. Windows puede avisar que la app no está firmada: «Más información» y «Ejecutar de todas formas».
+
+## Respaldo
+
+En **Ajustes → Respaldo** puedes descargar todos tus datos en un archivo y restaurarlos después (o llevarlos a otro equipo). Haz uno cada cierto tiempo.
 
 ## Desarrollo
 

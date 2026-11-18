@@ -25,10 +25,11 @@ tienda-app/      App móvil (Expo + Expo Router + TypeScript)
   src/lib/operaciones.ts  Registrar ventas/compras, stock, costo promedio ponderado
   src/lib/escaner/   Escáner (escaner.ts), OCR (ocr.ts) e intérprete de boletas (parser.ts, con pruebas)
                      Las versiones .web.ts usan canvas + Tesseract.js para probar en el navegador
+tienda-escritorio/ (en la raíz)  Envoltorio Electron que genera MiTienda.exe
 tienda-server/   Servidor pequeño que analiza las fotos con la API de Claude
 ```
 
-Los datos se guardan en el teléfono (AsyncStorage). Las fotos van solo al servidor propio, que guarda la API key de Anthropic, así la clave nunca queda dentro de la app.
+Los datos se guardan en el teléfono o navegador (AsyncStorage) y, en la app de escritorio (`tienda-escritorio/`), en un archivo `datos.json` del computador. En Ajustes → Respaldo se pueden exportar e importar (`src/lib/respaldo.ts`, con pruebas). Las fotos van solo al servidor propio, que guarda la API key de Anthropic, así la clave nunca queda dentro de la app.
 
 ## Cómo usarlo
 
