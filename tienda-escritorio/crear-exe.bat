@@ -5,6 +5,7 @@ echo Instalando lo necesario (la primera vez tarda unos minutos)...
 call npm --prefix ..\tienda-app install || goto error
 call npm install || goto error
 call npm run empaquetar || goto error
+if not exist "%~dp0salida\MiTienda-win32-x64\MiTienda.exe" goto error
 echo.
 echo Listo. Se abrira la carpeta con MiTienda.exe
 start "" "%~dp0salida\MiTienda-win32-x64"

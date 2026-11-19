@@ -27,6 +27,13 @@ const salida = path.join(aqui, "salida");
     asar: true, prune: false, quiet: true,
   });
 
+  const exe = path.join(dir, "MiTienda.exe");
+  if (!fs.existsSync(exe)) {
+    console.error("No se encontró MiTienda.exe en", dir, "\nContenido de la salida:", fs.existsSync(salida) ? fs.readdirSync(salida) : "(no existe)");
+    console.error("Si tienes antivirus, puede haberlo eliminado: agrega una excepción para esta carpeta y vuelve a intentarlo.");
+    process.exit(1);
+  }
+
   console.log("3/4 Agregando instrucciones…");
   fs.writeFileSync(path.join(dir, "LEEME.txt"), [
     "MI TIENDA (Windows)",
