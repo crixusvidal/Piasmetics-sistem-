@@ -32,6 +32,10 @@ codigo\tienda-escritorio\crear-exe.bat
 
 Tarda unos minutos la primera vez y abre la carpeta `salida\MiTienda-win32-x64`; ahí está `MiTienda.exe` (no necesita Node para usarse, puedes copiar la carpeta donde quieras). Los datos quedan en `%APPDATA%\MiTienda\datos\datos.json` y se conservan al actualizar. Windows puede avisar que la app no está firmada: «Más información» y «Ejecutar de todas formas».
 
+### Sin compilar: `MiTienda.exe` ya hecho
+
+Después de `git pull`, haz doble clic en `capturas\mi-tienda-windows\abrir-mi-tienda.bat`: une los dos pedazos del programa, lo descomprime en esa misma carpeta (`MiTienda-win32-x64\MiTienda.exe`) y lo abre. Está partido en dos porque GitHub no acepta archivos de más de 100 MB. No está probado en un Windows real.
+
 ## Respaldo
 
 En **Ajustes → Respaldo** puedes descargar todos tus datos en un archivo y restaurarlos después (o llevarlos a otro equipo). Haz uno cada cierto tiempo.
